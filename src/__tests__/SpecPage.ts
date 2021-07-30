@@ -16,7 +16,8 @@ export class SpecPage {
     /** The logo homepage link */
     duckLogo: By = By.id('logo_homepage_link');
     /** The search result links */
-    titleLinks: By = By.id('links');
+    titleLinks: By = By.id('links'); 
+    // get the id of the div that contains the results
 
     /**
      * This is the constructor for the SpecPage class
@@ -46,7 +47,7 @@ export class SpecPage {
         await this.driver.wait(until.elementLocated(this.titleLinks));
     }
 
-    /*async getResults() {
+    /*async getResuls() {
         let links = [];
         await this.driver.wait(until.elementsLocated(this.titleLinks));
         let results = await this.driver.findElements(this.titleLinks);
@@ -60,17 +61,14 @@ export class SpecPage {
      * @returns - the array containing the results from the search
      */
     async getResults() {
-        let links = [];
-        //await this.driver.wait(until.elementsLocated(this.titleLinks));
-        let results = await this.driver.findElements(this.titleLinks);
-        //links.push((await results[0].getText()).toLowerCase());
-        //console.log("got one result");
-        for (let i = 0; i < results.length; i++) {
-            links.push(await (await results[i].getText()).toLowerCase());
-        }
-        return links;
+        return this.getText(this.titleLinks);
     }
     
+    async getText(locator: By) {
+        await this.driver.wait(until.elementLocated(locator));
+        return (await this.driver.findElement(locator)).getText();
+      }
+
     /** Click action for page elements
      * @param locator - the element to click
      */
