@@ -16,7 +16,7 @@ export class SpecPage {
     /** The logo homepage link */
     duckLogo: By = By.id('logo_homepage_link');
     /** The search result links */
-    titleLinks: By = By.className('.result__a');
+    titleLinks: By = By.id('links');
 
     /**
      * This is the constructor for the SpecPage class
@@ -43,7 +43,7 @@ export class SpecPage {
      */
     async doSearch(searchValue: string) {
         await this.sendKeys(this.searchBar, `${searchValue}\n`);
-        await this.driver.wait(until.elementsLocated(this.titleLinks));
+        await this.driver.wait(until.elementLocated(this.titleLinks));
     }
 
     /*async getResults() {
@@ -61,8 +61,10 @@ export class SpecPage {
      */
     async getResults() {
         let links = [];
-        await this.driver.wait(until.elementsLocated(this.titleLinks));
+        //await this.driver.wait(until.elementsLocated(this.titleLinks));
         let results = await this.driver.findElements(this.titleLinks);
+        //links.push((await results[0].getText()).toLowerCase());
+        //console.log("got one result");
         for (let i = 0; i < results.length; i++) {
             links.push(await (await results[i].getText()).toLowerCase());
         }
@@ -79,7 +81,7 @@ export class SpecPage {
 
     /** 
      * Fills input to the page element
-     * @param locator - the inout element
+     * @param locator - the input element
      * @param keys - the string to input
      */
     async sendKeys(locator: By, keys: string) {
